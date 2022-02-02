@@ -23,7 +23,6 @@ def parse_data(filename):
 
 # Old patients
 def num_older_than(age, data):
-    data_patient = parse_data(data)
     data_patient["age"] = []
     count = 0
     for date in data_patient["PatientDateOfBirth"]:  # N times
@@ -40,7 +39,6 @@ def num_older_than(age, data):
 
 # Sick patients
 def sick_patients(lab, gt_lt, value, data):
-    data_lab = parse_data(data)
     id_lab = []
     for i in range(len(data_lab["LabName"])):  # N times
         if data_lab["LabName"][i] == lab:  # O(1)
@@ -53,17 +51,12 @@ def sick_patients(lab, gt_lt, value, data):
 
 
 if __name__ == "__main__":
-    print(
-        num_older_than(
-            51.2, "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
-        )
+    data_patient = parse_data(
+        "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
     )
-    print(
-        sick_patients(
-            "METABOLIC: ALBUMIN",
-            ">",
-            4.0,
-            "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt",
-        )
+    data_lab = parse_data(
+        "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
     )
 
+    print(num_older_than(51.2, data_patient))
+    print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data_lab))
