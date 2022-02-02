@@ -2,10 +2,10 @@ from datetime import datetime
 
 # Data parsing
 def parse_data(filename):
-    """ For EHR data, it is more efficient to use dictionary than list
-    Dictionay associates each key with values, so that we can easily look them up by key
-    List can only go element by element until the result is found
-    In this case, create a list for dic
+    """ For EHR data, it is more efficient to use dictionary than only lists.
+    Dictionay associates each key with values, so that we can easily look data up by key.
+    List can only go element by element until the result is found.
+    In this case, I chose to create a list for dic
     """
     f = open(filename, "r", encoding="utf-8-sig")
     data = {}
