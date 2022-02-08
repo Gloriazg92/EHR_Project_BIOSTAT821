@@ -7,22 +7,22 @@ def parse_data(filename):
     List can only go element by element until the result is found.
     In this case, I chose to create a list for dic
     """
-    f = open(filename, "r", encoding="utf-8-sig")
     data = {}
-    lines = f.readlines()
-    labels = lines[0].split()
-    for label in labels:  # O(1)
-        data[label] = []  # O(1)
-    for line in lines[1:]:  # N-1 times
-        line_p = line.strip().split("\t")  # O(1)
-        for i in range(len(labels)):  # M times -- 7
-            data[labels[i]].append(line_p[i])  # O(1)
+    with open(filename, "r", encoding="utf-8-sig") as files:
+        lines = files.readlines()
+        labels = lines[0].split()
+        for label in labels:  # O(1)
+            data[label] = []  # O(1)
+        for line in lines[1:]:  # N-1 times
+            line_p = line.strip().split("\t")  # O(1)
+            for i in range(len(labels)):  # M times -- 7
+                data[labels[i]].append(line_p[i])  # O(1)
     return data
     # 1+1+(N-1)*(1+M*1) -> O(N*M)
 
 
 # Old patients
-def num_older_than(age, data):
+def num_older_than(age: int, data: dict[str, int]) -> int:
     data_patient["age"] = []
     count = 0
     for date in data_patient["PatientDateOfBirth"]:  # N times
@@ -38,15 +38,17 @@ def num_older_than(age, data):
 
 
 # Sick patients
-def sick_patients(lab, gt_lt, value, data):
-    id_lab = []
+def sick_patients(lab: str, gt_lt: str, value: int, data: dict[str, int]) -> set[int]:
+    if gt_lt != "<" and gt_lt != ">":
+        raise ValueError(f"{gt_lt} should be a > or <")
+    id_lab = set()
     for i in range(len(data_lab["LabName"])):  # N times
         if data_lab["LabName"][i] == lab:  # O(1)
             if gt_lt == ">" and float(data_lab["LabValue"][i]) > value:  # O(1)
-                id_lab.append(data_lab["PatientID"][i])  # O(1)
+                id_lab.add(data_lab["PatientID"][i])  # O(1)
             elif gt_lt == "<" and float(data_lab["LabValue"][i]) < value:  # O(1)
-                id_lab.append(data_lab["PatientID"][i])  # O(1)
-    return set(id_lab)
+                id_lab.add(data_lab["PatientID"][i])  # O(1)
+    return id_lab
     # N*(1+1+1+1+1) -> O(N)
 
 
