@@ -1,7 +1,10 @@
+from __future__ import annotations
 from datetime import datetime
+from typing import Union, List, Dict
+
 
 # Data parsing
-def parse_data(filename: str) -> dict[str, int]:
+def parse_data(filename: str) -> list[dict[str, str]]:
     """ For EHR data, it is more efficient to use dictionary than only lists.
     Dictionay associates each key with values, so that we can easily look data up by key.
     List can only go element by element until the result is found.
@@ -39,12 +42,10 @@ def num_older_than(age: int, data: dict[str, int]) -> int:
 
 # Sick patients
 def sick_patients(lab: str, gt_lt: str, value: int, data: dict[str, int]) -> set[int]:
-    """Raise error if the input of 'gt_lt' is neither > or < and suggest a change"""
     if gt_lt != "<" and gt_lt != ">":
         raise ValueError(f"{gt_lt} should be a > or <")
     id_lab = set()
     for i in range(len(data_lab["LabName"])):  # N times
-        """obtain the patientID that have larger or smaller to the result in a specific lab"""
         if data_lab["LabName"][i] == lab:  # O(1)
             if gt_lt == ">" and float(data_lab["LabValue"][i]) > value:  # O(1)
                 id_lab.add(data_lab["PatientID"][i])  # O(1)
@@ -64,4 +65,3 @@ if __name__ == "__main__":
 
     print(num_older_than(51.2, data_patient))
     print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data_lab))
-
