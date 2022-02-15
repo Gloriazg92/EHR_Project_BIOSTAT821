@@ -10,7 +10,7 @@ def parse_data(filename: str) -> dict[str, list[str]]:
     List can only go element by element until the result is found.
     In this case, I chose to create a list for dic
     """
-    data = {}
+    data: dict = {}
     with open(filename, "r", encoding="utf-8-sig") as files:
         lines = files.readlines()
         labels = lines[0].split()
@@ -34,7 +34,7 @@ def num_older_than(age: int, data: dict[str, list[str]]) -> int:
             float((datetime.now() - date_of_birth).days) / 365
         )  # O(1)
     for i in range(len(data_patient["age"])):  # N times
-        if data_patient["age"][i] > age:  # O(1)
+        if int(data_patient["age"][i]) > age:  # O(1)
             count += 1  # O(1)
     return count
     # N*(1+1)+N*(1+1) -> O(N)
@@ -67,3 +67,4 @@ if __name__ == "__main__":
 
     print(num_older_than(51.2, data_patient))
     print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data_lab))
+
