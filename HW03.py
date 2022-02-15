@@ -4,7 +4,7 @@ from typing import Union, List, Dict
 
 
 # Data parsing
-def parse_data(filename: str) -> list[dict[str, str]]:
+def parse_data(filename: str) -> dict[str, str]:
     """ For EHR data, it is more efficient to use dictionary than only lists.
     Dictionay associates each key with values, so that we can easily look data up by key.
     List can only go element by element until the result is found.
@@ -25,7 +25,7 @@ def parse_data(filename: str) -> list[dict[str, str]]:
 
 
 # Old patients
-def num_older_than(age: int, data: dict[str, int]) -> int:
+def num_older_than(age: int, data: dict[str, str]) -> int:
     data_patient["age"] = []
     count = 0
     for date in data_patient["PatientDateOfBirth"]:  # N times
@@ -41,7 +41,7 @@ def num_older_than(age: int, data: dict[str, int]) -> int:
 
 
 # Sick patients
-def sick_patients(lab: str, gt_lt: str, value: int, data: dict[str, int]) -> set[int]:
+def sick_patients(lab: str, gt_lt: str, value: int, data: dict[str, str]) -> set[int]:
     if gt_lt != "<" and gt_lt != ">":
         raise ValueError(f"{gt_lt} should be a > or <")
     id_lab = set()
