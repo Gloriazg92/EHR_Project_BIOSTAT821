@@ -1,5 +1,6 @@
 from __future__ import annotations
 from datetime import datetime
+import string
 from typing import Union, List, Dict
 
 
@@ -34,7 +35,7 @@ def num_older_than(age: int, data: dict[str, list[str]]) -> int:
             float((datetime.now() - date_of_birth).days) / 365
         )  # O(1)
     for i in range(len(data_patient["age"])):  # N times
-        if int(data_patient["age"][i]) > age:  # O(1)
+        if data_patient["age"][i] > age:  # O(1)
             count += 1  # O(1)
     return count
     # N*(1+1)+N*(1+1) -> O(N)
@@ -42,8 +43,8 @@ def num_older_than(age: int, data: dict[str, list[str]]) -> int:
 
 # Sick patients
 def sick_patients(
-    lab: str, gt_lt: str, value: int, data: dict[str, list[str]]
-) -> set[int]:
+    lab: str, gt_lt: str, value: float, data: dict[str, list[str]]
+) -> set[str]:
     if gt_lt != "<" and gt_lt != ">":
         raise ValueError(f"{gt_lt} should be a > or <")
     id_lab = set()
