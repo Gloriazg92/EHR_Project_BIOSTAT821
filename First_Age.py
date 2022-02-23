@@ -1,7 +1,9 @@
 from datetime import datetime
 
 
-def age_first_adm(patient_data, lab_data, patientID):
+def age_first_adm(
+    patient_data: dict[str, list[str]], lab_data: dict[str, list[str]], patientID: str
+) -> float:
     """
     obtain the age of patient at his first lab
     return -1 if the patientID doesn't exit in the data
@@ -31,4 +33,4 @@ if __name__ == "__main__":
     data_lab = parse_data(
         "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
     )
-    print(age_first_lab(data_patient, data_lab, "FB2ABB23-C9D0-4D09-8464-49BF0B982F0F"))
+    print(age_first_adm(data_patient, data_lab, "FB2ABB23-C9D0-4D09-8464-49BF0B982F0F"))

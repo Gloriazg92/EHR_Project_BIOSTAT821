@@ -1,9 +1,4 @@
-import pytest
 import HW03
-import First_Age
-from datetime import datetime
-from HW03 import parse_data, num_older_than, sick_patients
-from First_Age import age_first_adm
 
 
 def test_parse_data():
@@ -33,7 +28,7 @@ def test_age_first_adm():
     Test function age_first_adm to chech whether it returns the age of a specific patient selected from the dataset
     """
     assert (
-        First_Age.age_first_adm(
+        HW03.age_first_adm(
             HW03.data_patient, HW03.data_lab, "FB2ABB23-C9D0-4D09-8464-49BF0B982F0F"
         )
         == 20.79
