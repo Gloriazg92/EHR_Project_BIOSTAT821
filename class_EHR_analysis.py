@@ -22,19 +22,31 @@ class Lab:
         self.units = list_data[4]
 
 
-def build_data(file_name):
+def build_data_patient(file_name):
     data = []
     with open(file_name, "r", encoding="utf-8-sig") as files:
         for line in files.readlines()[1:]:
             data.append(Patient(line.split("\t")))
+    return data
+
+
+def build_data_lab(file_name):
+    data = []
+    with open(file_name, "r", encoding="utf-8-sig") as files:
+        for line in files.readlines()[1:]:
             data.append(Lab(line.split("\t")))
     return data
 
 
 if __name__ == "__main__":
     print(
-        build_data(
+        build_data_patient(
             "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
         )[0].gender
+    )
+    print(
+        build_data_lab(
+            "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
+        )[0].units
     )
 
