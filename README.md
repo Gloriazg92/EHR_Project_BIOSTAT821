@@ -53,6 +53,19 @@ Example:
 20.79
 ```
 
+**class_EHR_analysis**
+This file contain two class functions Patient and Lab. The function "build_data_patient" will retrun a list of data with ID, gender, DOB and race. The function "build_data_lab" will retrun a list of data with ID, lab value and lab units. 
+To use the class Patient, users need to input a list like *["FB2ABB23-C9D0-4D09-8464-49BF0B982F0F", "Male", "1947-12-28 02:45:40.547", "Unknown", "Married", "Icelandic", 18.08]* for the initial function. 
+To use the class Lab, users need to input a list like *["1A8791E3-A61C-455A-8DEE-763EB90C9B2C", "1", "URINALYSIS: RED BLOOD CELLS", 1.8, "rbc/hpf", "1992-07-01 01:36:17.910"]* for the initial function. 
+
+Example:
+```python
+>> build_data_patient("PatientCorePopulatedTable.txt")[0].gender)
+MALE
+```
+
 
 ## For contributors:
 The test file "HW_4.py" which can be used to test all four functions by 'pytest'. Data should be in the required format from 'PatientCorePopulatedTable.txt' and 'LabsCorePopulatedTable.txt'. "HW_4.py", "HW03.py" and "Age_First.py" should be in the same folder in order for the testing. All four tests should pass, any changes of sample output can result in a failed test. 
+
+The test file "Test_class_EHR_analysis.py" which can be used to test class Patient and class Lab in the file *"class_EHR_analysis.py"*. "Test_class_EHR_analysis.py" and "class_EHR_analysis.py" should be in the same folder in order for the testing.
