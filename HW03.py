@@ -90,6 +90,13 @@ data_lab = parse_data("/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTab
 
 
 if __name__ == "__main__":
+    data_patient = parse_data(
+        "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
+    )
+    data_lab = parse_data(
+        "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
+    )
+
     print(num_older_than(51.2, data_patient))
     print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data_lab))
     print(age_first_adm(data_patient, data_lab, "FB2ABB23-C9D0-4D09-8464-49BF0B982F0F"))
