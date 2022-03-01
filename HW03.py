@@ -83,12 +83,6 @@ def age_first_adm(
     return age
 
 
-data_patient = parse_data(
-    "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
-)
-data_lab = parse_data("/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt")
-
-
 if __name__ == "__main__":
     data_patient = parse_data(
         "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
