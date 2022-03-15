@@ -3,14 +3,11 @@ import pytest
 
 
 def test_build_data_patient():
-    patient_test = build_data_patient(
-        "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
-    )
+    """Use small data files created: Patient_1 and Labs_1 """
+    patient_test = build_data_patient("/Patient_1.txt")
     assert patient_test[0].gender == "Male"
 
 
 def test_build_data_lab():
-    lab_test = build_data_lab(
-        "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
-    )
+    lab_test = build_data_lab("/Labs_1.txt")
     assert lab_test[0].units == "rbc/hpf"
