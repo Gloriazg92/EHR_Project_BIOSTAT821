@@ -1,7 +1,44 @@
-from __future__ import annotations
 from datetime import datetime
-import string
-from typing import Union, List, Dict
+
+
+class Patient:
+    def __init__(self, list_data: list[str]) -> None:
+        """Initial function"""
+        self.id = list_data[0]
+        self.gender = list_data[1]
+        self.dob = datetime.strptime(list_data[2], "%Y-%m-%d %H:%M:%S.%f")
+        self.race = list_data[3]
+
+    @property
+    def age(self):
+        """A property age"""
+        return round(float((datetime.now() - self.dob).days) / 365, 2)
+
+
+class Lab:
+    def __init__(self, list_data: list[str]) -> None:
+        self.id = list_data[0]
+        self.admissionid = list_data[1]
+        self.name = list_data[2]
+        self.value = list_data[3]
+        self.units = list_data[4]
+        self.datetime = datetime.strptime(list_data[5], "%Y-%m-%d %H:%M:%S.%f ")
+
+
+def build_data_patient(file_name: str) -> list[Patient]:
+    data_patient = []
+    with open(file_name, "r", encoding="utf-8-sig") as files:
+        for line in files.readlines()[1:]:
+            data_patient.append(Patient(line.split("\t")))
+    return data_patient
+
+
+def build_data_lab(file_name: str) -> list[Lab]:
+    data_lab = []
+    with open(file_name, "r", encoding="utf-8-sig") as files:
+        for line in files.readlines()[1:]:
+            data_lab.append(Lab(line.split("\t")))
+    return data_lab
 
 
 # Data parsing
@@ -26,71 +63,58 @@ def parse_data(filename: str) -> dict[str, list[str]]:
 
 
 # Old patients
-def num_older_than(age: float, data: dict[str, list[str]]) -> int:
-    data_patient["age"] = []
-    count = 0
-    for date in data_patient["PatientDateOfBirth"]:  # N times
-        date_of_birth = datetime.strptime(date.split()[0], "%Y-%m-%d")  # O(1)
-        data_patient["age"].append(
-            float((datetime.now() - date_of_birth).days) / 365
-        )  # O(1)
-    for i in range(len(data_patient["age"])):  # N times
-        if data_patient["age"][i] > age:  # O(1)
-            count += 1  # O(1)
-    return count
+def num_older_than(age: float, data_patient: list[Patient]) -> int:
+    counter = 0
+    for patient in data_patient:
+        if patient.age > age:
+            counter += 1
+    return counter
     # N*(1+1)+N*(1+1) -> O(N)
 
 
 # Sick patients
 def sick_patients(
-    lab: str, gt_lt: str, value: float, data: dict[str, list[str]]
+    lab_name: str, gt_lt: str, value: float, data_lab: list[Lab]
 ) -> set[str]:
     if gt_lt != "<" and gt_lt != ">":
         raise ValueError(f"{gt_lt} should be a > or <")
     id_lab = set()
-    for i in range(len(data_lab["LabName"])):  # N times
-        if data_lab["LabName"][i] == lab:  # O(1)
-            if gt_lt == ">" and float(data_lab["LabValue"][i]) > value:  # O(1)
-                id_lab.add(data_lab["PatientID"][i])  # O(1)
-            elif gt_lt == "<" and float(data_lab["LabValue"][i]) < value:  # O(1)
-                id_lab.add(data_lab["PatientID"][i])  # O(1)
+    for lab in data_lab:
+        if lab.name == lab_name:
+            if gt_lt == ">" and lab.value > value:
+                id_lab.add(lab.id)
+            elif gt_lt == "<" and lab.value < value:
+                id_lab.add(lab.id)
     return id_lab
     # N*(1+1+1+1+1) -> O(N)
 
 
 def age_first_adm(
-    patient_data: dict[str, list[str]], lab_data: dict[str, list[str]], patientID: str
+    data_patient: list[Patient], data_lab: list[Lab], patientID: str
 ) -> float:
-    """
-    obtain the age of patient at his first lab
-    return -1 if the patientID doesn't exit in the data
-    """
-    date = datetime.now()
-    for i in range(len(lab_data["PatientID"])):
-        if lab_data["PatientID"][i] == patientID:
-            date_of_lab = datetime.strptime(
-                lab_data["LabDateTime"][i], "%Y-%m-%d %H:%M:%S.%f"
-            )
-            if date_of_lab < date:
-                date = date_of_lab
+    date_list = []
+    for lab in data_lab:
+        if lab.admissionid == "1" and lab.id == patientID:
+            date_list.append(lab.datetime)
+    date_of_lab = data_lab[0].datetime
+    for date in date_list:
+        if date_of_lab < date:
+            date = date_of_lab
     age = -1
-    for i in range(len(patient_data["PatientID"])):
-        if patient_data["PatientID"][i] == patientID:
-            date_of_birth = datetime.strptime(
-                patient_data["PatientDateOfBirth"][i], "%Y-%m-%d %H:%M:%S.%f"
-            )
-            age = round(float((date - date_of_birth).days) / 365, 2)
+    for patient in data_patient:
+        if patient.id == patientID:
+            age = round(float((date - patient.dob).days) / 365, 2)
     return age
 
 
-data_patient = parse_data(
-    "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
-)
-data_lab = parse_data("/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt")
-
-
 if __name__ == "__main__":
-    print(num_older_than(51.2, data_patient))
-    print(sick_patients("METABOLIC: ALBUMIN", ">", 4.0, data_lab))
-    print(age_first_adm(data_patient, data_lab, "FB2ABB23-C9D0-4D09-8464-49BF0B982F0F"))
-
+    print(
+        build_data_patient(
+            "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
+        )[0].gender
+    )
+    print(
+        build_data_lab(
+            "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
+        )[0].units
+    )
