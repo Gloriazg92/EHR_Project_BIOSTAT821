@@ -106,15 +106,3 @@ def age_first_adm(
             age = round(float((date - patient.dob).days) / 365, 2)
     return age
 
-
-if __name__ == "__main__":
-    print(
-        build_data_patient(
-            "/Users/guzhengyi/Desktop/BIOSTAT 821/PatientCorePopulatedTable.txt"
-        )[0].gender
-    )
-    print(
-        build_data_lab(
-            "/Users/guzhengyi/Desktop/BIOSTAT 821/LabsCorePopulatedTable.txt"
-        )[0].units
-    )
