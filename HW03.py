@@ -105,4 +105,3 @@ def age_first_adm(
         if patient.id == patientID:
             age = round(float((date - patient.dob).days) / 365, 2)
     return age
-
