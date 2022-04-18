@@ -4,29 +4,9 @@ import sqlite3
 con = sqlite3.connect("ehr.db")
 cur = con.cursor()
 
-cur.execute(
-    "CREATE TABLE IF NOT EXISTS Patient ([PatientID] STRING PRIMARY KEY, [PatientGender] STRING, [PatientDateOfBirth] DATETIME, [PatientRace] STRING)"
-)
-
-cur.execute(
-    "CREATE TABLE IF NOT EXISTS Labs ([PatientID] STRING PRIMARY KEY, [AdmissionID] INTEGER, [LabName] STRING, [LabValue] FLOAT, [LabDateTime] DATETIME)"
-)
-
-with open("PatientCorePopulatedTable.txt", "r", encoding="utf-8-sig") as files:
-    for line in files.readlines()[1:]:
-        data_patient = list(map(lambda x: "'%s'" % x, line.split("\t")))
-        cur.execute("INSERT INTO Patient VALUES(%s)" % ",".join(data_patient))
-con.commit()
-
-with open("LabsCorePopulatedTable.txt", "r", encoding="utf-8-sig") as files:
-    for line in files.readlines()[1:]:
-        data_lab = list(map(lambda x: "'%s'" % x, line.split("\t")))
-        cur.execute("INSERT INTO Labs VALUES(%s)" % ",".join(data_lab))
-con.commit()
-
 
 class Patient:
-    def __init__(self, cursor, PatientID):
+    def __init__(self, cursor, PatientID: str):
         self.cursor = cursor
         self.PatientID = PatientID
 
@@ -54,7 +34,7 @@ class Patient:
 
 
 class Lab:
-    def __init__(self, cursor, PatientID):
+    def __init__(self, cursor, PatientID: str):
         self.cursor = cursor
         self.PatientID = PatientID
 
@@ -84,6 +64,31 @@ class Lab:
             datetime.strptime(datetime[0], "%Y-%m-%d %H:%M:%S.%f ")
             for datetime in self.cursor.fetchall()
         ]
+
+
+# Data parsing
+def parse_patient_data(file_name: str) -> list[Patient]:
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS Patient ([PatientID] STRING PRIMARY KEY, [PatientGender] STRING, [PatientDateOfBirth] DATETIME, [PatientRace] STRING)"
+    )
+    data_patient = []
+    with open(file_name, "r", encoding="utf-8-sig") as files:
+        for line in files.readlines()[1:]:
+            data_patient.append(Patient(line.split("\t")))
+            cur.execute("INSERT INTO Patient VALUES(%s)" % ",".join(data_patient))
+    return data_patient
+
+
+def parse_lab_data(file_name: str) -> list[Lab]:
+    cur.execute(
+        "CREATE TABLE IF NOT EXISTS Labs ([PatientID] STRING PRIMARY KEY, [AdmissionID] INTEGER, [LabName] STRING, [LabValue] FLOAT, [LabDateTime] DATETIME)"
+    )
+    data_lab = []
+    with open(file_name, "r", encoding="utf-8-sig") as files:
+        for line in files.readlines()[1:]:
+            data_lab.append(Lab(line.split("\t")))
+            cur.execute("INSERT INTO Labs VALUES(%s)" % ",".join(data_lab))
+    return data_lab
 
 
 # Old patients
