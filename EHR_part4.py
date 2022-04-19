@@ -11,25 +11,25 @@ class Patient:
         self.PatientID = PatientID
 
     @property
-    def gender(self):
+    def gender(self) -> str:
         cmd = f"SELECT PatientGender FROM Patient WHERE Patient.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return self.cursor.fetchone()[0]
 
     @property
-    def dob(self):
+    def dob(self) -> datetime:
         cmd = f"SELECT PatientDateOfBirth FROM Patient WHERE Patient.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return datetime.strptime(self.cursor.fetchone()[0], "%Y-%m-%d %H:%M:%S.%f")
 
     @property
-    def race(self):
+    def race(self) -> str:
         cmd = f"SELECT PatientRace FROM Patient WHERE Patient.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return self.cursor.fetchone()[0]
 
     @property
-    def age(self):
+    def age(self) -> float:
         return round(float((datetime.now() - self.dob).days) / 365, 2)
 
 
@@ -39,25 +39,25 @@ class Lab:
         self.PatientID = PatientID
 
     @property
-    def admissionid(self):
+    def admissionid(self) -> str:
         cmd = f"SELECT AdmissionID FROM Labs WHERE Labs.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return [admissionid[0] for admissionid in self.cursor.fetchall()]
 
     @property
-    def name(self):
+    def name(self) -> str:
         cmd = f"SELECT LabName FROM Labs WHERE Labs.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return [name[0] for name in self.cursor.fetchall()]
 
     @property
-    def value(self):
+    def value(self) -> float:
         cmd = f"SELECT LabValue FROM Labs WHERE Labs.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return [value[0] for value in self.cursor.fetchall()]
 
     @property
-    def datetime(self):
+    def datetime(self) -> datetime:
         cmd = f"SELECT LabDateTime FROM Labs WHERE Labs.PatientID = '{self.PatientID}'"
         self.cursor.execute(cmd)
         return [
@@ -125,4 +125,3 @@ def sick_patients(
             id_lab.add(patient.admissionid)
     return id_lab
     # N*(1+1+1+1+1) -> O(N)
-

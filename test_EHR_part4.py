@@ -28,7 +28,18 @@ lab2 = Lab(
     value="1.8",
     datetime=datetime.strptime("1947-12-28 02:45:40.547", "%Y-%m-%d %H:%M:%S.%f"),
 )
-a = parse_patient_data("Patient_1.txt")
+patient_test = parse_patient_data("Patient_1.txt")
+lab_test = parse_lab_data("Labs_1.txt")
+
+
+def test_parse_patient_data():
+    patient_test = parse_patient_data("Patient_1.txt")
+    assert patient_test[0].gender == "Male"
+
+
+def test_parse_lab_data():
+    lab_test = parse_lab_data("Labs_1.txt")
+    assert lab_test[0].units == "rbc/hpf"
 
 
 def test_class_patient():
@@ -47,4 +58,6 @@ def test_num_older_than():
 
 
 def test_sick_patients():
-    assert sick_patients("URINALYSIS: RED BLOOD CELLS", ">", 1, a, 1) == set(["1", "2"])
+    assert sick_patients("URINALYSIS: RED BLOOD CELLS", ">", 1, patient_test, 1) == set(
+        ["1", "2"]
+    )
